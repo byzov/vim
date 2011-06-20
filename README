@@ -1,1 +1,4 @@
 I like my vim
+
+Add in .vimrc:
+source ~/.vim/vimrc
