@@ -44,6 +44,7 @@ let tlist_php_settings = 'php;c:class;d:constant;f:function'
 map <F4> :TlistToggle<cr>
 
 Bundle 'Vimball'
+Bundle 'git@github.com:byzov/mdxquery.git'
 
 "add some line space for easy reading
 set linespace=4
