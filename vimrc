@@ -21,6 +21,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'ack.vim'
 
 Bundle 'snipMate'
+let snippets_dir = '$HOME/.vim/snippets'
 ino <tab> <c-r>=TriggerSnippet()<cr>
 snor <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
 
