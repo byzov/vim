@@ -5,11 +5,8 @@ set modelines=0
 
 let mapleader=','
 
-set rtp+=~/.vim/vundle.git/ 
+set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-
-" original repos on github
-Bundle 'tpope/vim-fugitive'
 "Bundle 'lokaltog/vim-easymotion'
 "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " vim-scripts repos
@@ -18,8 +15,35 @@ Bundle 'tpope/vim-fugitive'
 "Bundle 'rails.vim'
 " non github repos
 "Bundle 'git://git.wincent.com/command-t.git'
-" ...
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-fugitive'
 
+Bundle 'ack.vim'
+
+Bundle 'snipMate'
+ino <tab> <c-r>=TriggerSnippet()<cr>
+snor <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
+
+Bundle 'bufexplorer.zip'
+Bundle 'EnhCommentify.vim'
+Bundle 'AutoClose'
+Bundle 'ctags.vim'
+Bundle 'matchit.zip'
+
+Bundle 'taglist.vim'
+let Tlist_Ctags_Cmd = "ctags"
+let Tlist_WinWidth = 37
+let Tlist_Show_One_File = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Process_File_Always = 1
+let Tlist_Sort_Type = "name"
+let Tlist_Use_SingleClick = 1
+let Tlist_Compact_Format = 0
+let tlist_php_settings = 'php;c:class;d:constant;f:function'
+map <F4> :TlistToggle<cr>
+
+Bundle 'Vimball'
 
 "add some line space for easy reading
 set linespace=4
@@ -59,9 +83,6 @@ if &term =~ "xterm"
         let &t_Sb="\ESC[4%dm"
     endif
 endif
-
-"set cursorline
-filetype plugin on
 
 "autocmd FileType html,xhtml source ~/.vim/scripts/sparkup.vim
 autocmd FileType html,xhtml,smarty setlocal nonumber
@@ -129,36 +150,6 @@ set fileencodings=utf-8,cp1251,koi8-r,cp866
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 "set whichwrap=b,s,<,>,[,],l,h
 
-
-" Tags
-let Tlist_Ctags_Cmd = "ctags"
-let Tlist_WinWidth = 37
-let Tlist_Show_One_File = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Process_File_Always = 1
-let Tlist_Sort_Type = "name"
-let Tlist_Use_SingleClick = 1
-let Tlist_Compact_Format = 0
-let tlist_php_settings = 'php;c:class;d:constant;f:function'
-map <F4> :TlistToggle<cr>
-
-"let tlist_txt_settings = 'txt;c:content;f:figures;t:tables' "language definition for plain text
-"au BufRead,BufNewFile *.txt setlocal ft=txt "syntax highlight for txt.vim 
-
-
-" Insert <Tab> or complete identifier
-" if the cursor is after a keyword character
-"function MyTabOrComplete()
-"    let col = col('.')-1
-"    if !col || getline('.')[col-1] !~ '\k'
-"         return "\<tab>"
-"    else
-"         return "\<C-X>\<C-O>"
-"    endif
-"endfunction
-"inoremap <Tab> <C-R>=MyTabOrComplete()<CR>
-
 "Insert newline without entering insert mode
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
@@ -173,25 +164,7 @@ set ignorecase " Ignore case when searching
 set smartcase " Ignore case when searching lowercase
 set gdefault
 
-"autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-
-map <F3> :find<cr>
-
 map <C-s> :w<cr>
-
-"Buffers
-"let g:miniBufExplMapWindowNavVim = 1
-"let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplModSelTarget = 1 
-
-"function ToggleHLSearch()
-"       if &hls
-"            set nohls
-"       else
-"            set hls
-"       endif
-"endfunction
 
 " Выделять строку под курсором
 "set cursorline
@@ -265,11 +238,7 @@ autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 autocmd BufEnter * cd %:p:h
 
 " MDX syntax
-autocmd BufRead,BufNewFile *.mdx set syntax=mdx 
-
-" PHP documentation
-"set runtimepath+=.vim/php
-"autocmd BufNewFile,Bufread *.php set keywordprg="help"
+autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
 
 "-----------------------------------------------------------------
 " When editing an .html,.css, or .gtpl file, make Firefox refresh
@@ -327,25 +296,11 @@ set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
-" Перечитать конфиг при его изменении
-"autocmd! bufwritepost ~/.vimrc execute "normal! :source ~/.vimrc"
-
-"ShowMarks
-let g:showmarks_enable=0
-let g:showmarks_include="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-let g:showmarks_ignore_type="hqrm"
-let g:showmarks_textlower="\t"
-let g:showmarks_textupper="\t"
-let g:showmarks_hlline_lower=1
-let g:showmarks_hlline_upper=1
-"highlight ShowMarksHLl guifg=pink guibg=red
-"highlight ShowMarksHLu guifg=pink guibg=red
-
 " Включает виртуальный звонок (моргает, а не бибикает при ошибках)
-set novisualbell           " don't beep
+set novisualbell "don't beep
 
 " Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<CR>
+nmap <silent> <leader>ev <C-w><C-v><C-l>:e $HOME/.vim/vimrc<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 set hidden
@@ -383,11 +338,9 @@ nmap <leader>P "+P
 
 set scrolloff=3
 
-au FocusLost * :wa
-
-au BufWritePre * :set binary | set noeol
-au BufWritePost * :set nobinary | set eol
+" need not save if not a file
+"au FocusLost * :wa!
 
 cmap w!! %!sudo tee > /dev/null %
 
-
+filetype plugin indent on
