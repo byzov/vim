@@ -1,15 +1,13 @@
 Add in .vimrc:
 source ~/.vim/vimrc
 
-<h1>Plugins</h1>
-<ul>
-    <li>EnhancedCommentify - commenting code</li>
-    <li><strong>ack</strong> - searching</li>
-    <li><strong>autoclose</strong> - auto close pairs of characters</li>
-    <li><strong>bufexplorer</strong> - favorite plugin to work with buffers</li>
-    <li><strong>ctags</strong></li>
-    <li><strong>matchit</strong></li>
-    <li><strong>snipMate</strong></li>
-    <li><strong>taglist</strong></li>
-    <li><strong>vimballPlugin</strong></li>
-</ul>
+#Plugins
+* EnhancedCommentify - commenting code
+* ack - searching
+* autoclose - auto close pairs of characters
+* bufexplorer - favorite plugin to work with buffers
+* ctags
+* matchit
+* snipMate
+* taglist
+* vimballPlugin
