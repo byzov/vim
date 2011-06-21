@@ -387,3 +387,7 @@ au FocusLost * :wa
 
 au BufWritePre * :set binary | set noeol
 au BufWritePost * :set nobinary | set eol
+
+cmap w!! %!sudo tee > /dev/null %
+
+
