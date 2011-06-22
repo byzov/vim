@@ -143,6 +143,10 @@ let Tlist_Compact_Format = 0
 let tlist_php_settings = 'php;c:class;d:constant;f:function'
 map <F4> :TlistToggle<cr>
 
+"Syntax
+Bundle 'mdx.vim'
+Bundle 'smarty-syntax'
+
 " Favorite color schemes
 Bundle 'pyte'
 Bundle 'darkspectrum'
