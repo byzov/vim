@@ -44,6 +44,33 @@ let Tlist_Compact_Format = 0
 let tlist_php_settings = 'php;c:class;d:constant;f:function'
 map <F4> :TlistToggle<cr>
 
+" Favorite color schemes
+Bundle 'pyte'
+Bundle 'darkspectrum'
+Bundle 'lucius'
+Bundle 'solarized'
+
+" Other color schemes
+Bundle 'atom'
+Bundle 'bclear'
+Bundle 'blueshift'
+Bundle 'cobaltish'
+Bundle 'earendel'
+Bundle 'ir_black'
+Bundle 'jellybeans'
+Bundle 'liquidcarbon'
+Bundle 'mac_classic'
+Bundle 'mayansmoke'
+Bundle 'molokai'
+Bundle 'newspaper'
+Bundle 'nuvola'
+Bundle 'peaksea'
+Bundle 'sorcerer'
+Bundle 'stackoverflow'
+Bundle 'tesla'
+Bundle 'vylight'
+Bundle 'xoria256'
+
 Bundle 'Vimball'
 Bundle 'git@github.com:byzov/mdxquery.git'
 
