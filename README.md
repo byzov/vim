@@ -1,5 +1,11 @@
-Add in .vimrc:
-source ~/.vim/vimrc
+#Setup
+1. `git clone git@github.com:byzov/vim.git`
+1. `git clone git@github.com:byzov/mdxquery.git`
+1.  Add in .vimrc: `source ~/.vim/vimrc`
+1. Launch Vim
+1. `:BundleInstall`
+OR
+Download last package
 
 #Plugins
 * EnhancedCommentify - commenting code
