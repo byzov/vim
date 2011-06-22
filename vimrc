@@ -1,10 +1,109 @@
+" Sets
 set nocompatible
 set nofoldenable
 set nu
 set modelines=0
+"add some line space for easy reading
+set linespace=4
+" Включаем мышку даже в текстовом режиме
+" (очень удобно при копировании из терминала, т. к. без этой опции,
+" например, символы табуляции раскладываются в кучу пробелов).
+set mouse=a
+" Опции автодополнения - включаем только меню с доступными вариантами
+" автодополнения (также, например, для omni completion может быть
+" окно предварительного просмотра).
+set completeopt=menu
+" Выключаем перенос строк
+set nowrap
+" Отключаем создание бэкапов
+set nobackup
+" Отключаем создание swap файлов
+set noswapfile
+" Список кодировок файлов для автоопределения
+set fileencodings=utf-8,cp1251,koi8-r,cp866
+" Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
+"set whichwrap=b,s,<,>,[,],l,h
+set scrolloff=3
+set listchars=tab:>-
+set list
+" Включает виртуальный звонок (моргает, а не бибикает при ошибках)
+set novisualbell "don't beep
+set hidden
+" Замена табуляции на пробелы
+set expandtab
+" Размер табуляции
+set tabstop=4
+" Размер сдвига при нажатии на клавиши << и >>
+set shiftwidth=4
+set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
+set showmatch     " set show matching parenthesis
+" Копирует отступ от предыдущей строки
+set autoindent
+" Включаем 'умную' автоматическую расстановку отступов
+set smartindent
+" need not save if not a file
+"au FocusLost * :wa!
+" Searching
+set hlsearch " highlight search
+set incsearch " incremental search, search as you type
+set ignorecase " Ignore case when searching
+set smartcase " Ignore case when searching lowercase
+set gdefault
 
+let php_sql_query=1
+let php_htmlInStrings=1
 let mapleader=','
 
+"Map
+"Insert newline without entering insert mode
+map <S-Enter> O<Esc>
+map <CR> o<Esc>
+"Jump to first non-blank character in the line
+map <home> ^
+map <C-s> :w<cr>
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev <C-w><C-v><C-l>:e $HOME/.vim/vimrc<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+" Speed up scrolling of the viewport slightly
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
+" Easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+nnoremap ; :
+nmap <silent> <leader>/ :nohlsearch<CR>
+cmap w!! w !sudo tee % >/dev/null
+" Yank/paste to the OS clipboard with ,y and ,p
+nmap <leader>y "+y
+nmap <leader>Y "+yy
+nmap <leader>p "+p
+nmap <leader>P "+P
+cmap w!! %!sudo tee > /dev/null %
+
+"Autocommand
+"recalculate the long line warning when idle and after saving
+autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
+" автоматически переходить в папку где лежит редактируемый файл
+autocmd BufEnter * cd %:p:h
+" MDX syntax
+autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
+autocmd FileType html,xhtml,smarty setlocal nonumber
+autocmd FileType html,xhtml set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType txt setlocal textwidth=70 wrap nonumber
+autocmd FileType css setlocal wrap nonumber
+
+
+"Bundles
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 "Bundle 'lokaltog/vim-easymotion'
@@ -74,8 +173,6 @@ Bundle 'xoria256'
 Bundle 'Vimball'
 Bundle 'git@github.com:byzov/mdxquery.git'
 
-"add some line space for easy reading
-set linespace=4
 
 set bg=dark
 if has('gui_running')
@@ -113,90 +210,11 @@ if &term =~ "xterm"
     endif
 endif
 
-"autocmd FileType html,xhtml source ~/.vim/scripts/sparkup.vim
-autocmd FileType html,xhtml,smarty setlocal nonumber
-autocmd FileType html,xhtml set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType txt setlocal textwidth=70 wrap nonumber
-autocmd FileType css setlocal wrap nonumber
-"autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-let php_sql_query=1
-let php_htmlInStrings=1
-
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-
-"inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-"inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-"inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-"inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-
 "au BufRead,BufNewFile *.tpl set filetype=html.smarty.javascript
 
-" normal copy/paste
-"vmap <C-c> y<Esc>i
-"vmap <C-x> d<Esc>i
-"imap <C-v> <Esc>pi
-
-" Включаем мышку даже в текстовом режиме
-" (очень удобно при копировании из терминала, т. к. без этой опции,
-" например, символы табуляции раскладываются в кучу пробелов).
-set mouse=a
-
-" Опции автодополнения - включаем только меню с доступными вариантами
-" автодополнения (также, например, для omni completion может быть
-" окно предварительного просмотра).
-set completeopt=menu
-
-
-" Замена табуляции на пробелы
-set expandtab
-" Размер табуляции
-set tabstop=4
-" Размер сдвига при нажатии на клавиши << и >>
-set shiftwidth=4
-set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
-set showmatch     " set show matching parenthesis
-" Копирует отступ от предыдущей строки
-set autoindent
-" Включаем 'умную' автоматическую расстановку отступов
-set smartindent
 " Включаем подсветку синтаксиса
 syntax on
 
-" Выключаем перенос строк
-set nowrap
-
-" Отключаем создание бэкапов
-set nobackup
-" Отключаем создание swap файлов
-set noswapfile
-"" Все swap файлы будут помещаться в эту папку
-"set dir=~/.vim/swp
-
-" Список кодировок файлов для автоопределения
-set fileencodings=utf-8,cp1251,koi8-r,cp866
-
-" Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
-"set whichwrap=b,s,<,>,[,],l,h
-
-"Insert newline without entering insert mode
-map <S-Enter> O<Esc>
-map <CR> o<Esc>
-
-"Jump to first non-blank character in the line
-map <home> ^
-
-" Searching *******************************************************************
-set hlsearch " highlight search
-set incsearch " incremental search, search as you type
-set ignorecase " Ignore case when searching
-set smartcase " Ignore case when searching lowercase
-set gdefault
-
-map <C-s> :w<cr>
-
-" Выделять строку под курсором
-"set cursorline
 
 " Statusline
 "set statusline=%<%F%h%m%r%h%w%y\ %{strftime(\"%Y-%m-%d\ %H:%M\",getftime(expand(\"%:p\")))}%=\ line\ %l\ \o\f\ %L
@@ -259,16 +277,6 @@ function! StatuslineTabWarning()
     return b:statusline_tab_warning
 endfunction
 
-"recalculate the long line warning when idle and after saving
-autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
-"-----------------------------------------------------------------
-
-" автоматически переходить в папку где лежит редактируемый файл
-autocmd BufEnter * cd %:p:h
-
-" MDX syntax
-autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
-
 "-----------------------------------------------------------------
 " When editing an .html,.css, or .gtpl file, make Firefox refresh
 " after the buffer is saved, preserving the current scroll offset.
@@ -315,61 +323,11 @@ autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
 "  endif
 "endfunction
 
-set listchars=tab:>-
-set list
-
 " Переключение раскладки
 " http://habrahabr.ru/blogs/vim/98393/
 set keymap=russian-jcukenwin
 set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
-
-" Включает виртуальный звонок (моргает, а не бибикает при ошибках)
-set novisualbell "don't beep
-
-" Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev <C-w><C-v><C-l>:e $HOME/.vim/vimrc<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
-
-set hidden
-
-" Speed up scrolling of the viewport slightly
-nnoremap <C-e> 2<C-e>
-nnoremap <C-y> 2<C-y>
-
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-"inoremap <up> <nop>
-"inoremap <down> <nop>
-"inoremap <left> <nop>
-"inoremap <right> <nop>
-
-" Easy window navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-
-nnoremap ; :
-
-nmap <silent> <leader>/ :nohlsearch<CR>
-
-cmap w!! w !sudo tee % >/dev/null
-
-" Yank/paste to the OS clipboard with ,y and ,p
-nmap <leader>y "+y
-nmap <leader>Y "+yy
-nmap <leader>p "+p
-nmap <leader>P "+P
-
-set scrolloff=3
-
-" need not save if not a file
-"au FocusLost * :wa!
-
-cmap w!! %!sudo tee > /dev/null %
 
 filetype plugin indent on
