@@ -3,6 +3,7 @@
 1.  Add in .vimrc: `source ~/.vim/vimrc`
 1. Launch Vim
 1. `:BundleInstall`
+
 #OR
 Download last package
 
