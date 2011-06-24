@@ -24,6 +24,7 @@ set fileencodings=utf-8,cp1251,koi8-r,cp866
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 "set whichwrap=b,s,<,>,[,],l,h
 set scrolloff=3
+"Задаем символ для отображения табов
 set listchars=tab:>-
 set list
 " Включает виртуальный звонок (моргает, а не бибикает при ошибках)
@@ -46,7 +47,6 @@ set smartindent
 " Searching
 set hlsearch " highlight search
 set incsearch " incremental search, search as you type
-set ignorecase " Ignore case when searching
 set smartcase " Ignore case when searching lowercase
 set gdefault
 
@@ -148,9 +148,9 @@ Bundle 'mdx.vim'
 Bundle 'smarty-syntax'
 
 " Favorite color schemes
-Bundle 'pyte'
+Bundle 'Pyte'
 Bundle 'darkspectrum'
-Bundle 'lucius'
+Bundle 'Lucius'
 Bundle 'solarized'
 
 " Other color schemes
@@ -194,9 +194,9 @@ if has('gui_running')
     set guioptions-=R
 else
     " Non-GUI (terminal) colors
-"    colorscheme lucius
-    let g:solarized_termcolors=256
-    colorscheme solarized
+    colorscheme lucius
+"    let g:solarized_termcolors=256
+"    colorscheme solarized
 endif
 
 " for putty
@@ -335,3 +335,99 @@ set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
 filetype plugin indent on
+
+" Send MDX query to server and get result
+" TODO Make a plugin
+" TODO Hide passwords in config file.
+"      Example:
+"          Bundle 'mdxquery'
+"          let mdx_config = '~/.vim/mdx.config'
+:com! -range -nargs=0 MojivaMDX 
+            \ call MDXSend(<line1>,<line2>,"mojiva")
+:com! -range -nargs=0 MoceanMDX 
+            \ call MDXSend(<line1>,<line2>,"mocean")
+
+function! MDXSend(fl,ll,s)
+python << EOF
+import vim
+import urllib
+import urllib2
+import time
+
+# Get function args
+start = int(vim.eval('a:fl'))-1
+end = int(vim.eval('a:ll'))
+scheme = vim.eval('a:s')
+
+# Get selected lines
+lines = vim.current.buffer[start:end]
+mdx = ''.join(lines)
+
+# Set params
+params = {'f':'txt', 
+          's':scheme, 
+          'q':mdx}
+data = urllib.urlencode(params) 
+
+url = 'http://example.com/olap'
+username = 'user'
+password = 'secret'
+
+# Creates a password manager
+passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+passman.add_password(None, url, username, password)
+
+# Create the AuthHandler
+authhandler = urllib2.HTTPBasicAuthHandler(passman)
+
+# Set up authentication handler
+opener = urllib2.build_opener(authhandler)
+urllib2.install_opener(opener)
+request = urllib2.Request(url, data)
+
+# Send request by POST method and calculate time
+stime = time.time()
+pagehandle = urllib2.urlopen(request)
+query_time = time.time() - stime
+
+# TODO Remove carriage return from the lines
+print pagehandle.read(), \
+      "%.1f sec" % query_time
+EOF
+endfunction
+
+" Formatting SQL using SQLParse. Also can
+" format MDX query.
+" TODO Make a plugin
+:com! -range -nargs=0 FSQL
+            \ call SQLFormat(<line1>,<line2>)
+
+function! SQLFormat(fl,ll)
+" TODO Join short lines
+python << EOF
+import vim
+import sqlparse
+import string
+
+# Get function args
+start = int(vim.eval('a:fl'))-1
+end = int(vim.eval('a:ll'))
+
+# Get selected lines
+lines = vim.current.buffer[start:end]
+sql = ''.join(lines)
+
+# Remove selected lines
+del vim.current.buffer[start:end]
+
+# Generate and add formatted SQL
+new_sql = sqlparse.format(sql, reindent=True, keyword_case='upper')
+for (i, line) in enumerate(string.split(new_sql, '\n')):
+    vim.current.buffer[start+i:start+i] = [line.encode('latin-1')]
+
+# Set cursor on first changed line
+vim.current.window.cursor = (start+1, 0)
+
+# TODO Add new line at the end
+EOF
+endfunction
