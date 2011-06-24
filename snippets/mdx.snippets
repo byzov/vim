@@ -1,25 +1,25 @@
 snippet select
-	SELECT {${1:[Measures].[Example]}} ON COLUMNS
+	SELECT {${1:[Measures].[Example]}} ON COLUMNS 
 	FROM [Billing]
 	WHERE ${2}
 
 snippet select2
 	SELECT {${1:[Measures].[Example]}} ON COLUMNS,
-	       {${2:[Measures].[Example]}} ON ROWS
+	       {${2:[Measures].[Example]}} ON ROWS 
 	FROM [Billing]
 	WHERE ${3}
 
 snippet select3
 	SELECT {${1:[Measures].[Example]}} ON COLUMNS,
 	       {${2:[Measures].[Example]}} ON ROWS,
-	       {${3:[Measures].[Example]}} ON PAGES
+	       {${3:[Measures].[Example]}} ON PAGES 
 	FROM [Billing]
 	WHERE ${4}
 
 snippet with
 	WITH MEMBER [AggregateValues] 
 		 AS 'Aggregate({${1:[Measures].[Example]}})'
-	SELECT {${2:[Measures].[Example]}} ON COLUMNS
+	SELECT {${2:[Measures].[Example]}} ON COLUMNS 
 	FROM [Billing]
 	WHERE [AggregateValues]
 
@@ -27,15 +27,15 @@ snippet with2
 	WITH MEMBER [AggregateValues] 
 		 AS 'Aggregate({${1:[Measures].[Example]}})'
 	SELECT {${2:[Measures].[Example]}} ON COLUMNS,
-	       {${3:[Measures].[Example]}} ON ROWS
+	       {${3:[Measures].[Example]}} ON ROWS 
 	FROM [Billing]
 	WHERE [AggregateValues]
 
-snippet with2
+snippet with3
 	WITH MEMBER [AggregateValues] 
 		 AS 'Aggregate({${1:[Measures].[Example]}})'
 	SELECT {${2:[Measures].[Example]}} ON COLUMNS,
 	       {${3:[Measures].[Example]}} ON ROWS,
-	       {${4:[Measures].[Example]}} ON PAGES
+	       {${4:[Measures].[Example]}} ON PAGES 
 	FROM [Billing]
 	WHERE [AggregateValues]
