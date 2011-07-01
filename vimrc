@@ -47,7 +47,7 @@ set smartindent
 " Searching
 set hlsearch " highlight search
 set incsearch " incremental search, search as you type
-set smartcase " Ignore case when searching lowercase
+set ignorecase " Ignore case when searching lowercase
 set gdefault
 
 let php_sql_query=1
@@ -94,14 +94,14 @@ cmap w!! %!sudo tee > /dev/null %
 "recalculate the long line warning when idle and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 " автоматически переходить в папку где лежит редактируемый файл
-autocmd BufEnter * cd %:p:h
+"autocmd BufEnter * cd %:p:h
 " MDX syntax
 autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
 autocmd FileType html,xhtml,smarty setlocal nonumber
 autocmd FileType html,xhtml set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType txt setlocal textwidth=70 wrap nonumber
 autocmd FileType css setlocal wrap nonumber
-
+autocmd FileType php set iskeyword+=$
 
 "Bundles
 set rtp+=~/.vim/bundle/vundle/
@@ -129,6 +129,7 @@ Bundle 'EnhCommentify.vim'
 Bundle 'AutoClose'
 Bundle 'ctags.vim'
 Bundle 'matchit.zip'
+Bundle 'php.vim'
 
 Bundle 'taglist.vim'
 let Tlist_Ctags_Cmd = "ctags"
@@ -148,35 +149,41 @@ Bundle 'mdx.vim'
 Bundle 'smarty-syntax'
 
 " Favorite color schemes
-Bundle 'Pyte'
+Bundle 'pyte'
 Bundle 'darkspectrum'
 Bundle 'Lucius'
-Bundle 'solarized'
+Bundle 'Solarized'
 
 " Other color schemes
-Bundle 'atom'
-Bundle 'bclear'
-Bundle 'blueshift'
-Bundle 'cobaltish'
-Bundle 'earendel'
-Bundle 'ir_black'
-Bundle 'jellybeans'
-Bundle 'liquidcarbon'
-Bundle 'mac_classic'
-Bundle 'mayansmoke'
-Bundle 'molokai'
-Bundle 'newspaper'
-Bundle 'nuvola'
-Bundle 'peaksea'
-Bundle 'sorcerer'
-Bundle 'stackoverflow'
-Bundle 'tesla'
-Bundle 'vylight'
-Bundle 'xoria256'
+"Bundle 'atom'
+"Bundle 'bclear'
+"Bundle 'blueshift'
+"Bundle 'cobaltish'
+"Bundle 'earendel'
+"Bundle 'ir_black'
+"Bundle 'jellybeans'
+"Bundle 'liquidcarbon'
+"Bundle 'mac_classic'
+"Bundle 'mayansmoke'
+"Bundle 'molokai'
+"Bundle 'newspaper'
+"Bundle 'nuvola'
+"Bundle 'peaksea'
+"Bundle 'sorcerer'
+"Bundle 'stackoverflow'
+"Bundle 'tesla'
+"Bundle 'vylight'
+"Bundle 'xoria256'
 
 Bundle 'Vimball'
 Bundle 'git@github.com:byzov/mdxquery.git'
 
+" TRY
+" ---
+
+" Vim rooter - change root dir
+Bundle 'git://github.com/blueyed/vim-rooter.git'
+autocmd BufEnter *.html,*.js,*.php,*.css,*.tpl :Rooter
 
 set bg=dark
 if has('gui_running')
@@ -337,7 +344,7 @@ highlight lCursor guifg=NONE guibg=Cyan
 filetype plugin indent on
 
 " Send MDX query to server and get result
-" TODO Make a plugin
+" TODO Make a plugin mdxquery
 " TODO Hide passwords in config file.
 "      Example:
 "          Bundle 'mdxquery'
@@ -347,12 +354,15 @@ filetype plugin indent on
 :com! -range -nargs=0 MoceanMDX 
             \ call MDXSend(<line1>,<line2>,"mocean")
 
+let mdx_config = '/home/byzov_pa/.vim/mdx.config'
 function! MDXSend(fl,ll,s)
 python << EOF
 import vim
 import urllib
 import urllib2
 import time
+import ConfigParser
+import os
 
 # Get function args
 start = int(vim.eval('a:fl'))-1
@@ -363,15 +373,22 @@ scheme = vim.eval('a:s')
 lines = vim.current.buffer[start:end]
 mdx = ''.join(lines)
 
+# Print MDX query
+print '>>>', ' '.join(mdx.split())
+print ">>>\n"
+
 # Set params
 params = {'f':'txt', 
           's':scheme, 
           'q':mdx}
 data = urllib.urlencode(params) 
 
-url = 'http://example.com/olap'
-username = 'user'
-password = 'secret'
+# Get config
+config = ConfigParser.ConfigParser()
+config.readfp(open(vim.eval('g:mdx_config')))
+url = config.get("server", "url")
+username = config.get("server", "username")
+password = config.get("server", "password")
 
 # Creates a password manager
 passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
@@ -398,7 +415,7 @@ endfunction
 
 " Formatting SQL using SQLParse. Also can
 " format MDX query.
-" TODO Make a plugin
+" TODO Make a plugin SQLFormat
 :com! -range -nargs=0 FSQL
             \ call SQLFormat(<line1>,<line2>)
 
@@ -424,10 +441,9 @@ del vim.current.buffer[start:end]
 new_sql = sqlparse.format(sql, reindent=True, keyword_case='upper')
 for (i, line) in enumerate(string.split(new_sql, '\n')):
     vim.current.buffer[start+i:start+i] = [line.encode('latin-1')]
+# TODO Add new line at the end
 
 # Set cursor on first changed line
 vim.current.window.cursor = (start+1, 0)
-
-# TODO Add new line at the end
 EOF
 endfunction
