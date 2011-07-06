@@ -42,13 +42,26 @@ set showmatch     " set show matching parenthesis
 set autoindent
 " Включаем 'умную' автоматическую расстановку отступов
 set smartindent
-" need not save if not a file
+" TODO need not save if not a file
 "au FocusLost * :wa!
 " Searching
 set hlsearch " highlight search
 set incsearch " incremental search, search as you type
 set ignorecase " Ignore case when searching lowercase
 set gdefault
+
+" Set up the gui cursor to look nice
+set guicursor=n-v-c:block-Cursor-blinkon0,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ver25-Cursor,r-cr:hor20-Cursor,sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
+
+" Keep some stuff in the history
+set history=100
+
+" Allow the cursor to go in to "invalid" places
+" TODO delete if not good
+set virtualedit=all
+
+" Automatically read a file that has changed on disk
+set autoread
 
 let php_sql_query=1
 let php_htmlInStrings=1
@@ -88,7 +101,10 @@ nmap <leader>y "+y
 nmap <leader>Y "+yy
 nmap <leader>p "+p
 nmap <leader>P "+P
-cmap w!! %!sudo tee > /dev/null %
+
+" Make horizontal scrolling easier
+nmap <silent> <C-o> 10zl
+nmap <silent> <C-i> 10zh
 
 "Autocommand
 "recalculate the long line warning when idle and after saving
@@ -126,7 +142,7 @@ snor <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
 
 Bundle 'bufexplorer.zip'
 Bundle 'EnhCommentify.vim'
-Bundle 'AutoClose'
+"Bundle 'AutoClose'
 Bundle 'ctags.vim'
 Bundle 'matchit.zip'
 Bundle 'php.vim'
@@ -194,11 +210,7 @@ if has('gui_running')
     set guifont=Droid\ Sans\ Mono\ 10
 
     " Remove toolbar, left scrollbar and right scrollbar
-    set guioptions-=T
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
+    set guioptions=acgi
 else
     " Non-GUI (terminal) colors
     colorscheme lucius
@@ -371,7 +383,7 @@ scheme = vim.eval('a:s')
 
 # Get selected lines
 lines = vim.current.buffer[start:end]
-mdx = ''.join(lines)
+mdx = ' '.join(lines)
 
 # Print MDX query
 print '>>>', ' '.join(mdx.split())
