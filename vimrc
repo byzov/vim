@@ -199,10 +199,6 @@ let mdx_config = '/home/byzov_pa/.vim/mdx.config'
 " TRY
 " ---
 
-" Vim rooter - change root dir
-Bundle 'git://github.com/blueyed/vim-rooter.git'
-autocmd BufEnter *.html,*.js,*.php,*.css,*.tpl :Rooter
-
 set bg=dark
 if has('gui_running')
     " GUI colors
