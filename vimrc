@@ -57,7 +57,6 @@ set guicursor=n-v-c:block-Cursor-blinkon0,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ve
 set history=100
 
 " Allow the cursor to go in to "invalid" places
-" TODO delete if not good
 set virtualedit=all
 
 " Automatically read a file that has changed on disk
