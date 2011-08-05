@@ -104,6 +104,7 @@ nmap <leader>P "+P
 " Make horizontal scrolling easier
 nmap <silent> <C-o> 10zl
 nmap <silent> <C-i> 10zh
+map <C-]> g<C-]>
 
 "Autocommand
 "recalculate the long line warning when idle and after saving
@@ -197,12 +198,11 @@ let mdx_config = '/home/byzov_pa/.vim/mdx.config'
 
 " TRY
 " ---
+Bundle 'splitjoin.vim'
 
 set bg=dark
 if has('gui_running')
     " GUI colors
-"    colorscheme pyte
-"    colorscheme lucius
     colorscheme darkspectrum
     set guifont=Droid\ Sans\ Mono\ 10
 
@@ -211,8 +211,6 @@ if has('gui_running')
 else
     " Non-GUI (terminal) colors
     colorscheme lucius
-"    let g:solarized_termcolors=256
-"    colorscheme solarized
 endif
 
 " for putty
@@ -386,3 +384,6 @@ for (i, line) in enumerate(string.split(new_sql, '\n')):
 vim.current.window.cursor = (start+1, 0)
 EOF
 endfunction
+
+nmap <Leader>j :SplitjoinJoin<cr>
+nmap <Leader>s :SplitjoinSplit<cr>
