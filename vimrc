@@ -66,6 +66,23 @@ let php_sql_query=1
 let php_htmlInStrings=1
 let mapleader=','
 
+let g:netrw_list_hide='.*\.pyc$,^\.[^.]'
+let g:netrw_banner=0
+let g:netrw_special_syntax=1
+" Netrw Help
+"-      Makes Netrw go up one directory
+"a      Toggles between normal display, hiding, showing
+"d      Make a directory
+"i      Cycle between thin, long, wide, and tree listings
+"mb     Bookmark current directory
+"md     Apply diff to marked files (up to 3)
+"me     Place marked files on arg list and edit them
+"mf     Mark a file
+"mg     Grep inmarked files
+"<c-h>  Edit file hiding list
+"qb     List bookmarked directories and history
+"qf     Display information on file
+
 "Map
 "Insert newline without entering insert mode
 map <S-Enter> O<Esc>
