@@ -252,6 +252,17 @@ syntax on
 
 
 " Statusline
+"Add the variable with the name a:varName to the statusline. Highlight it as
+"'error' unless its value is in a:goodValues (a comma separated string)
+"function! AddStatuslineFlag(varName, goodValues)
+"    set statusline+=[
+"    set statusline+=%#error#
+"    exec "set statusline+=%{RenderStlFlag(".a:varName.",'".a:goodValues."',1)}"
+"    set statusline+=%*
+"    exec "set statusline+=%{RenderStlFlag(".a:varName.",'".a:goodValues."',0)}"
+"    set statusline+=]
+"endfunction
+
 "set statusline=%<%F%h%m%r%h%w%y\ %{strftime(\"%Y-%m-%d\ %H:%M\",getftime(expand(\"%:p\")))}%=\ line\ %l\ \o\f\ %L
 set statusline=%f "tail of the filename
 set statusline+=%y "filetype
@@ -270,13 +281,13 @@ hi gitmsg term=bold ctermfg=10 gui=bold guifg=#fce94f guibg=#3C3C3C
 set statusline+=%=
 "set statusline+=%c, "cursor column
 
+set statusline+=[%l\ of\ %L] "cursor line/total lines
 "display a warning if fileformat isnt unix
 set statusline+=%#warningmsg#%{&ff!='unix'?'['.&ff.']':''}%*
 "display a warning if file encoding isnt utf-8
 set statusline+=%#warningmsg#%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}%*
 "display a warning if &et is wrong, or we have mixed-indenting
 set statusline+=%#warningmsg#%{StatuslineTabWarning()}%*
-set statusline+=[L:%L] "cursor line/total lines
 "set statusline+=\ %P "percent through file
 set laststatus=2
 
