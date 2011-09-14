@@ -91,7 +91,7 @@ map <CR> o<Esc>
 map <home> ^
 map <C-s> :w<cr>
 " Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev <C-w><C-v><C-l>:e $HOME/.vim/vimrc<CR>
+nmap <silent> <leader>ev <C-w><C-v><C-l>:e $HOME/.vim/my.vim<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " Speed up scrolling of the viewport slightly
 nnoremap <C-e> 2<C-e>
