@@ -130,9 +130,9 @@ autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 "autocmd BufEnter * cd %:p:h
 " MDX syntax
 autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
+autocmd BufRead,BufNewFile *.txt setlocal textwidth=70 nowrap nonumber
 autocmd FileType html,xhtml,smarty setlocal nonumber
 autocmd FileType html,xhtml set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType txt setlocal textwidth=70 wrap nonumber
 autocmd FileType css setlocal wrap nonumber
 autocmd FileType php set iskeyword+=$
 
