@@ -93,7 +93,8 @@ let g:netrw_special_syntax=1
 
 "Map
 " Перейти в каталог с файлом
-map <C-^> :edit %:p:h<CR>
+" :E
+"map <C-^> :edit %:p:h<CR>
 "Insert newline without entering insert mode
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
@@ -445,6 +446,10 @@ set keymap=russian-jcukenwin
 set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
+
+" Сбрасывать язык при входе в режим вставки
+" http://vim.wikia.com/wiki/Insert-mode_only_Caps_Lock
+autocmd InsertLeave * set iminsert=0
 
 filetype plugin indent on
 
