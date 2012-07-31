@@ -62,6 +62,10 @@ set virtualedit=all
 " Automatically read a file that has changed on disk
 set autoread
 
+" Использовать системный буфер обмена 
+" http://vim.wikia.com/wiki/Accessing_the_system_clipboard
+"set clipboard=unnamed
+
 let php_sql_query=1
 let php_htmlInStrings=1
 let mapleader=','
@@ -83,19 +87,25 @@ let g:netrw_special_syntax=1
 "qb     List bookmarked directories and history
 "qf     Display information on file
 
+" Проверка орфографии
+"set spell
+"setlocal spell spelllang=en,ru
+
 "Map
+" Перейти в каталог с файлом
+map <C-^> :edit %:p:h<CR>
 "Insert newline without entering insert mode
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
-"Jump to first non-blank character in the line
-map <home> ^
+" Сохранить файл
 map <C-s> :w<cr>
-" Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev <C-w><C-v><C-l>:e $HOME/.vim/my.vim<CR>
+" Быстро редактируем и перегружаем .vimrc
+nmap <silent> <leader>ev <C-w><C-s><C-j>:e $HOME/.vim/my.vim<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " Speed up scrolling of the viewport slightly
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
+" Стрелки зло
 map <up> <nop>
 map <down> <nop>
 map <left> <nop>
@@ -104,30 +114,54 @@ map <right> <nop>
 "inoremap <down> <nop>
 "inoremap <left> <nop>
 "inoremap <right> <nop>
-" Easy window navigation
+" Легкая навигация между окнами
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 nnoremap ; :
 nmap <silent> <leader>/ :nohlsearch<CR>
+" Все равно записать, пофиг что нельзя
 cmap w!! w !sudo tee % >/dev/null
 " Yank/paste to the OS clipboard with ,y and ,p
-nmap <leader>y "+y
-nmap <leader>Y "+yy
-nmap <leader>p "+p
-nmap <leader>P "+P
+"nmap <leader>y "+y
+"nmap <leader>Y "+yy
+"nmap <leader>p "+p
+"nmap <leader>P "+P
 
-" Make horizontal scrolling easier
+" Открывает окно quickfix
+" TODO Возможно сделать по аналогии с буферами, чтобы в этом же окне
+"      появлялся список ошибок, при выборе перебрасывало в сам файл в
+"      этом же окне
+" TODO Сделать открытие/закрытие окна
+" http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+nmap <silent> <leader>cw :botright cwindow<CR>
+
+" Легкая горизонтальная прокрутка
 nmap <silent> <C-o> 10zl
 nmap <silent> <C-i> 10zh
+" Переход по тегам
 map <C-]> g<C-]>
+
+" по звездочке не прыгать на следующее найденное, а просто подсветить
+nnoremap * *N
+
+" в визуальном режиме по команде * подсвечивать выделение
+vnoremap * y :execute ":let @/=@\""<CR> :execute "set hlsearch"<CR>
+
+" Копирует до конца строки
+nnoremap Y y$
+
+" CSS соединение свойст в одну строку и разделение на несколько
+nmap <Leader>j :SplitjoinJoin<cr>
+nmap <Leader>s :SplitjoinSplit<cr>
+
+" Забываем Esc
+"imap jj <esc>
 
 "Autocommand
 "recalculate the long line warning when idle and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
-" автоматически переходить в папку где лежит редактируемый файл
-"autocmd BufEnter * cd %:p:h
 " MDX syntax
 autocmd BufRead,BufNewFile *.mdx set syntax=mdx filetype=mdx
 autocmd BufRead,BufNewFile *.txt setlocal textwidth=70 nowrap nonumber
@@ -135,6 +169,15 @@ autocmd FileType html,xhtml,smarty setlocal nonumber
 autocmd FileType html,xhtml set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css setlocal wrap nonumber
 autocmd FileType php set iskeyword+=$
+
+" Перезагрузка .vimrc файла после сохранения, чтобы изменения применились
+" сразу
+if has("autocmd")  
+    augroup myvimrchooks  
+        au!  
+        autocmd bufwritepost my.vim source $MYVIMRC
+    augroup END  
+endif  
 
 "Bundles
 set rtp+=~/.vim/bundle/vundle/
@@ -186,6 +229,7 @@ Bundle 'pyte'
 Bundle 'darkspectrum'
 Bundle 'Lucius'
 Bundle 'Solarized'
+Bundle 'lilypink'
 
 " Other color schemes
 "Bundle 'atom'
@@ -206,27 +250,53 @@ Bundle 'Solarized'
 "Bundle 'stackoverflow'
 "Bundle 'tesla'
 "Bundle 'vylight'
-"Bundle 'xoria256'
+Bundle 'xoria256.vim'
+"Bundle 'git://github.com/hukl/Smyck-Color-Scheme.git'
 
 Bundle 'Vimball'
 
-Bundle 'git@github.com:byzov/mdxquery.git'
-let mdx_config = '/home/byzov_pa/.vim/mdx.config'
+"Bundle 'git@github.com:byzov/mdxquery.git'
+"let mdx_config = '/home/byzov_pa/.vim/mdx.config'
 
 " TRY
 " ---
 Bundle 'splitjoin.vim'
+"Bundle 'git://github.com/Lokaltog/vim-powerline.git'
+"let g:Powerline_symbols = 'fancy'
 
-set bg=dark
+"Bundle 'git://github.com/mjbrownie/vim-htmldjango_omnicomplete.git'
+"au FileType htmldjango set omnifunc=htmldjangocomplete#CompleteDjango
+
+"Bundle 'pyflakes.vim'
+Bundle 'pylint.vim'
+" TODO Написать свои настройки для использования pylint, т.к.
+"      Этот уже с 2009г не пооддерживается и есть баги,
+"      поторые нужно все время править при установке.
+"      ИЛИ ПРОТЕСТРОВАТЬ django-lint
+let g:pylint_show_rate = 1
+"let g:pylint_onwrite = 1
+let g:pylint_cwindow = 0
+"set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
+"set errorformat=%f:%l:\ %m
+"autocmd FileType python compiler pylint
+
+" JS lint
+"set makeprg=/usr/local/bin/pyjslint\ -nologo\ -nofilelisting\ -nosummary\ -nocontext\ -conf\ '~/.vim/jslint.conf'\ -process\ %
+"set makeprg=jslint-cli\ -nologo\ -nofilelisting\ -nosummary\ -nocontext\ -process\ %
+"set errorformat=%f(%l):\ %m
+
 if has('gui_running')
     " GUI colors
-    colorscheme darkspectrum
+"    colorscheme darkspectrum
+    let g:lucius_style = "light"
+    colorscheme lucius
     set guifont=Droid\ Sans\ Mono\ 10
 
     " Remove toolbar, left scrollbar and right scrollbar
     set guioptions=acgi
 else
     " Non-GUI (terminal) colors
+    let g:lucius_style = "light"
     colorscheme lucius
 endif
 
@@ -413,5 +483,11 @@ vim.current.window.cursor = (start+1, 0)
 EOF
 endfunction
 
-nmap <Leader>j :SplitjoinJoin<cr>
-nmap <Leader>s :SplitjoinSplit<cr>
+:com! -range -nargs=0 Mytest
+            \ call Mytest(<line1>,<line2>)
+
+function! Mytest(fl,ll)
+php << EOF
+    print 'OKOK';
+EOF
+endfunction
